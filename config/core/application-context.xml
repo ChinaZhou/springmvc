@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+   http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+   http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+   http://www.springframework.org/schema/task 
+   http://www.springframework.org/schema/task/spring-task-3.0.xsd
+   http://www.springframework.org/schema/aop 
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    " >
+	<!-- 配置文件加载 -->
+	<context:property-placeholder location="classpath:springmvc-context.properties" />
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" lazy-init="true">
+		<property name="driverClass">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="user">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<!-- 连接池中保留的最小连接数。 -->
+		<property name="minPoolSize">
+			<value>${jdbc.connection.min}</value>
+		</property>
+		<!-- 连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize">
+			<value>${jdbc.connection.max}</value>
+		</property>
+		<!-- 初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<property name="initialPoolSize">
+			<value>${jdbc.connection.init}</value>
+		</property>
+		<!-- 最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime">
+			<value>${jdbc.connection.maxsave}</value>
+		</property>
+		<!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireIncrement">
+			<value>5</value>
+		</property>
+		
+	</bean>
+
+	<!-- 整合ibatis2 -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:/core/sqlmap-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 事务配置  start -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="globalRollbackOnParticipationFailure" value="false" />
+	</bean>
+	
+	<!-- 对@Transactional这个注解进行的驱动，这是基于注解的方式使用事务配置声明，这样在具体应用中可以指定对哪些方法使用事务 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	
+	<!-- 使用注解就不需要使用下面两个 -->
+
+	<!-- 配置事务传播特性 -->
+ 	<tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+		<tx:attributes> 
+			<!-- PROPAGATION_REQUIRED 如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中
+				在update开头的方法中遇到异常（Throwable）就回滚
+				以get开头的方法中的Connection是readonly的  -->
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Throwable"/> 
+			<tx:method name="get*" read-only="true" /> 
+			<tx:method name="query*" read-only="true" /> 
+			<tx:method name="find*" read-only="true" /> 
+			<tx:method name="*" /> 
+		</tx:attributes> 
+	</tx:advice>
+	
+	<!-- spring aop事务配置 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation" expression="execution(* com.springmvc.*.service.*.*(..))" /> 
+		<aop:advisor pointcut-ref="serviceOperation" advice-ref="txAdvice" /> 
+	</aop:config>
+	
+	<!-- 自定义aop测试 -->
+	<bean id="aopTest" class="com.springmvc.user.service.impl.AopTest"/>
+	<aop:config>
+		<aop:aspect id="myAop" ref="aopTest">
+			<aop:pointcut expression="execution(* com.springmvc.*.service.*.*(..))" id="target"/>
+			<aop:before method="before()" pointcut-ref="target"/>
+			<aop:after method="after()" pointcut-ref="target"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<!-- 事务配置 end -->
+
+	<!-- 自动扫描的包名 -->
+	<context:component-scan base-package="com.springmvc">
+		<!-- 配置Controller不扫描 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
+	</context:component-scan>
+	
+	<!-- 定时器 Quartz -->
+	<task:annotation-driven />
+
+	<!-- 配置文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="10485760000" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+	
+	<!-- 全局异常配置 start -->
+	<bean id="exceptionResolver" class="com.springmvc.comm.exception.CommonExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">/index/error</prop>
+				<prop key="java.lang.Throwable">/index/error</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="/index/error">500</prop>
+				<prop key="/index/error">404</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="ERROR"></property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="/index/error"></property>
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500"></property>
+	</bean>
+	<!-- 全局异常配置 end -->
+
+</beans> 

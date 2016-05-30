@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="user">
+
+	<typeAlias alias="user" type="com.springmvc.user.dto.UserDto" />
+ 
+ 	<!-- 插入 -->
+	<insert id="addUser" parameterClass="user">
+		insert into user
+			(
+				id,
+				username,
+				password,
+				createdBy,
+				created_date
+			)
+				values
+			(
+				<include refid="com.springmvc.queryIdpre" />
+				'USER'
+				<include refid="com.springmvc.queryIdmid" />
+				'user'
+				<include refid="com.springmvc.queryIdsuf" />,
+				#userName#,
+				#password#,
+				#createdBy#,
+				now()
+			)
+		<selectKey keyProperty="id" resultClass="java.lang.String">
+			<include refid="com.springmvc.returnIdpre" />
+			'CUS'
+			<include refid="com.springmvc.returnIdmid" />
+			'user'
+			<include refid="com.springmvc.returnIdsuf" />
+		</selectKey>
+	</insert>
+   
+</sqlMap>
