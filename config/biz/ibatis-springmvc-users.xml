@@ -37,5 +37,22 @@
 			<include refid="com.springmvc.returnIdsuf" />
 		</selectKey>
 	</insert>
+	
+	<select id="getAllUser" resultClass="HashMap" remapResults="true">
+		select 	id id,
+				userName userName,
+				password password,
+				created_date createdDate
+			from user
+	</select>
+	
+	<select id="getUserById" parameterClass="String"  resultClass="user" remapResults="true">
+		select 	id id,
+				userName userName,
+				password password,
+				created_date createdDate
+			from user
+			where id = #value#
+	</select>
    
 </sqlMap>

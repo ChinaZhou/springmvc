@@ -1,5 +1,7 @@
 package com.springmvc.user.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,16 @@ public class UserServiceImpl implements UserService{
 	public String addUser(UserDto userDto) {
 		String id = userDao.addUser(userDto);
 		return id;
+	}
+
+	@Override
+	public List<UserDto> getAllUser() {
+		return userDao.getAllUser();
+	}
+
+	@Override
+	public UserDto getUserById(String id) {
+		return userDao.getUserById(id);
 	}
 
 }

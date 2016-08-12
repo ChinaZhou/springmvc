@@ -1,5 +1,7 @@
 package com.springmvc.comm.dao.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -26,4 +28,27 @@ public class BaseIbatisDaoImpl extends SqlMapClientDaoSupport implements BaseIba
 		return this.getSqlMapClientTemplate().insert(sqlId, param);
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List getList(String sqlId, Object param) {
+		return this.getSqlMapClientTemplate().queryForList(sqlId, param);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List getList(String sqlId) {
+		return this.getSqlMapClientTemplate().queryForList(sqlId);
+	}
+
+	@Override
+	public Object getOne(String sqlId, Object param) {
+		return this.getSqlMapClientTemplate().queryForObject(sqlId, param);
+	}
+
+	@Override
+	public Object getOne(String sqlId) {
+		return this.getSqlMapClientTemplate().queryForObject(sqlId);
+	}
+	
+	
 }

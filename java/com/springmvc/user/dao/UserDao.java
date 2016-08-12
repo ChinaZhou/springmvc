@@ -1,5 +1,7 @@
 package com.springmvc.user.dao;
 
+import java.util.List;
+
 import com.springmvc.user.dto.UserDto;
 
 public interface UserDao {
@@ -10,4 +12,18 @@ public interface UserDao {
 	 * @return
 	 */
 	public String addUser(UserDto userDto);
+	
+	/**
+	 * 得到所有的用户信息
+	 * @param userDto
+	 * @return
+	 */
+	public List<UserDto> getAllUser();
+	
+	/**
+	 * 通过Id得到User信息
+	 * @param id
+	 * @return
+	 */
+	public UserDto getUserById(String id);
 }

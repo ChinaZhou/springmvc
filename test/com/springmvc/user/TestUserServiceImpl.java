@@ -1,5 +1,7 @@
 package com.springmvc.user;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
@@ -23,12 +25,9 @@ public class TestUserServiceImpl {
 	}
 	
 	@Test
-	public void testAddUser(){
+	public void testGetAllUser(){
 		UserServiceImpl userServiceImpl = (UserServiceImpl) factory.getBean("userServiceImpl");
-		UserDto userDto = new UserDto();
-		userDto.setUserName("test");
-		userDto.setPassword("123123");
-		String id = userServiceImpl.addUser(userDto);
-		System.out.println("id = "+id);
+		List<UserDto> userList = userServiceImpl.getAllUser();
+		System.out.println("userList size = "+userList.size());
 	}
 }
