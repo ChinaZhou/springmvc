@@ -46,7 +46,7 @@
 			from user
 	</select>
 	
-	<select id="getUserById" parameterClass="String"  resultClass="user" remapResults="true">
+	<select id="getUserById" parameterClass="java.lang.String"  resultClass="user" remapResults="true">
 		select 	id id,
 				userName userName,
 				password password,
@@ -54,5 +54,13 @@
 			from user
 			where id = #value#
 	</select>
+	
+	<delete id="deleteUserById" parameterClass="java.lang.String">
+		delete from user where id = #value#
+	</delete>
+	
+	<update id="updateUser" parameterClass="user">
+		update user set userName = #userName# where id = #id#
+	</update>
    
 </sqlMap>

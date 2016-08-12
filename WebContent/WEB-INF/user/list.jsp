@@ -42,9 +42,11 @@ function deleteUser(id){
 		url:'<%=basePath%>user/'+id,
 		dataType:'text', 
 		success:function(data){
-			if(data=="suc"){
+			if(data=="succ"){
 				alert("删除成功");
 				location.reload();
+			} else {
+				alert("删除失败");
 			}
 		},
 		error:function(data){
@@ -73,7 +75,7 @@ function deleteUser(id){
 					<td>
 						<a href="<%=basePath %>user/${user.id}/edit">编辑用户</a>
 						<a href="<%=basePath %>user/${user.id}">查看用户</a>
-						<a href="javascript:void(0);" onclick="deleteUser(${user.id })">删除用户</a>
+						<a href="javascript:void(0);" onclick="deleteUser('${user.id }')">删除用户</a>
 					</td>
 				</tr>
 			</c:forEach>

@@ -27,4 +27,14 @@ public class UserDaoImpl extends BaseIbatisDaoImpl implements UserDao{
 		return (UserDto) this.getOne("user.getUserById", id);
 	}
 
+	@Override
+	public int deleteUserById(String id) {
+		return (int) this.delete("user.deleteUserById", id);
+	}
+
+	@Override
+	public int updateUser(UserDto user) {
+		return (int) this.update("user.updateUser", user);
+	}
+
 }

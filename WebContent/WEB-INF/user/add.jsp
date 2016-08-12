@@ -30,18 +30,15 @@
 		<form action="<%=basePath%>user" method="post">
 			<table>
 				<tr>
-					<th>用户ID</th>
 					<th>用户名称</th>
+					<th>用户密码</th>
 				</tr>
 				<tr>
-					<td><input type="text" name="userId" id="userId" />
-					</td>
-					<td><input type="text" name="userName" id="userName" />
-					</td>
+					<td><input type="text" name="userName" id="userName" /></td>
+					<td><input type="text" name="password" id="password" /></td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="submit" value="保存用户" />
-					</td>
+					<td colspan="2"><input type="submit" value="保存用户" /></td>
 				</tr>
 			</table>
 		</form>

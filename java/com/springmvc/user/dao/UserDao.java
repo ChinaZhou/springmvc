@@ -26,4 +26,18 @@ public interface UserDao {
 	 * @return
 	 */
 	public UserDto getUserById(String id);
+	
+	/**
+	 * 通过Id删除User信息
+	 * @param id
+	 * @return
+	 */
+	public int deleteUserById(String id);
+	
+	/**
+	 * 更新用户信息
+	 * @param id
+	 * @return
+	 */
+	public int updateUser(UserDto user);
 }

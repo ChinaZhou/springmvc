@@ -49,6 +49,16 @@ public class BaseIbatisDaoImpl extends SqlMapClientDaoSupport implements BaseIba
 	public Object getOne(String sqlId) {
 		return this.getSqlMapClientTemplate().queryForObject(sqlId);
 	}
+
+	@Override
+	public Object delete(String sqlId, Object param) {
+		return this.getSqlMapClientTemplate().delete(sqlId, param);
+	}
+
+	@Override
+	public Object update(String sqlId, Object param) {
+		return this.getSqlMapClientTemplate().update(sqlId, param);
+	}
 	
 	
 }

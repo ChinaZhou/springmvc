@@ -13,4 +13,8 @@ public interface BaseIbatisDao {
 	Object getOne(String sqlId, Object param);
 	
 	Object getOne(String sqlId);
+	
+	Object delete(String sqlId, Object param);
+	
+	Object update(String sqlId, Object param);
 }

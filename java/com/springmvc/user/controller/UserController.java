@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springmvc.user.dto.UserDto;
 import com.springmvc.user.service.UserService;
@@ -38,5 +39,50 @@ public class UserController {
 		}
 		
 		return "/WEB-INF/user/detail";
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE,value="{id}")
+	@ResponseBody
+	public String delete(@PathVariable("id")String id){
+		System.out.println("id = "+id);
+		if (StringUtils.isNotBlank(id)) {
+			int result = userService.deleteUserById(id);
+			System.out.println("result = "+result);
+			if (result > 0) {
+				return "succ";
+			}
+		}
+		return "fail";
+	}
+	
+	@RequestMapping(method=RequestMethod.GET,value="{id}/edit")
+	public String toEdit(HttpServletRequest request, @PathVariable("id")String id){
+		System.out.println("id = "+id);
+		if (StringUtils.isNotBlank(id)) {
+			UserDto userDto = userService.getUserById(id);
+			request.setAttribute("user", userDto);
+		}
+		return "/WEB-INF/user/edit";
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT)
+	public String edit(UserDto user){
+		if (null != user) {
+			userService.updateUser(user);
+		}
+		return "redirect:/user";
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/add")
+	public String toAdd(){
+		return "/WEB-INF/user/add";
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public String add(UserDto user){
+		if (null != user) {
+			userService.addUser(user);
+		}
+		return "redirect:/user";
 	}
 }
