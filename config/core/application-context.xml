@@ -104,7 +104,7 @@
 	</aop:config>
 	
 	<!-- 自定义aop测试 -->
-	<bean id="aopTest" class="com.springmvc.user.service.impl.AopTest"/>
+	<bean id="aopTest" class="com.springmvc.comm.aop.AopTest"/>
 	<aop:config>
 		<aop:aspect id="myAop" ref="aopTest">
 			<aop:pointcut expression="execution(* com.springmvc.*.service.*.*(..))" id="target"/>
@@ -112,6 +112,8 @@
 			<aop:after method="after()" pointcut-ref="target"/>
 		</aop:aspect>
 	</aop:config>
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
 	<!-- 事务配置 end -->
 

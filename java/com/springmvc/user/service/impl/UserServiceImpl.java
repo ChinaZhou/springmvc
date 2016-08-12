@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springmvc.comm.annotation.Tag;
 import com.springmvc.user.dao.UserDao;
 import com.springmvc.user.dto.UserDto;
 import com.springmvc.user.service.UserService;
@@ -15,6 +16,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserDao userDao;
 
+	@Tag
 	@Override
 	public String addUser(UserDto userDto) {
 		String id = userDao.addUser(userDto);

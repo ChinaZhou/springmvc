@@ -24,6 +24,7 @@ implements HandlerExceptionResolver{
 	            HttpServletResponse response, Object handler, Exception ex) {  
         	String viewName = determineViewName(ex, request); 
         	System.out.println(" exception viewName = "+viewName);
+        	ex.printStackTrace();
         	return new ModelAndView(viewName);
             
         }
