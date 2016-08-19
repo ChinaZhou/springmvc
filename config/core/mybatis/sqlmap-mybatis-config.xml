@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true"/>
+		<setting name="lazyLoadingEnabled" value="false"/>
+		<setting name="defaultStatementTimeout" value="25000"/> 
+	</settings>
+	
+	<typeAliases>
+        <typeAlias alias="user" type="com.springmvc.user.dto.UserDto" />
+    </typeAliases>
+    
+    	<!--配置映射文件 -->
+	<!-- <mappers>
+    	<mapper resource="biz/mybatis/mybatis-springmvc-common.xml" />
+    	<mapper resource="biz/mybatis/mybatis-springmvc-common.xml" />
+	</mappers> -->
+	
+</configuration>

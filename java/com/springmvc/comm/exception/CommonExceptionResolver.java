@@ -18,7 +18,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 public class CommonExceptionResolver extends SimpleMappingExceptionResolver 
 implements HandlerExceptionResolver{
 	   
-	    static ApplicationContext factory=new ClassPathXmlApplicationContext("/core/application-context.xml");
+	    static ApplicationContext factory=new ClassPathXmlApplicationContext("/core/ibatis/application-context.xml");
         @Override  
 	    public ModelAndView resolveException(HttpServletRequest request,  
 	            HttpServletResponse response, Object handler, Exception ex) {  

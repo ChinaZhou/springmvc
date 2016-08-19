@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Aug 18 16:42:13 CST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springmvc">
+    <!--  MySql 分页插件 -->
+    <sql id="pre">
+        <if test="doAount == &quot;true&quot;">
+            SELECT COUNT(*) as counts FROM (
+        </if>
+    </sql>
+    <sql id="suf">
+        <if test="doAount == &quot;true&quot;">
+            ) _a
+        </if>
+        <if test="doAount == &quot;false&quot;">
+            limit #{beginIndex},#{pageSize}
+        </if>
+    </sql>
+    	 
+	<!-- mysql 主键策略 -->
+    <sql id="queryIdpre">
+        concat(
+    </sql>
+    <sql id="queryIdmid">
+    	, DATE_FORMAT(CURDATE(), '%y%m%d'), LPAD(NEXTVAL(
+    </sql>
+    <sql id="queryIdsuf">
+        ),6,'0')) 
+    </sql>
+    
+    <!-- 主键返回 -->
+    <sql id="returnIdpre">
+        select concat(
+    </sql>
+    <sql id="returnIdmid">
+    	, DATE_FORMAT(CURDATE(), '%y%m%d'), LPAD(CURRVAL(
+    </sql>
+    <sql id="returnIdsuf">
+        ),6,'0')) 
+    </sql>
+    
+</mapper>

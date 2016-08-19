@@ -19,7 +19,7 @@ public class TestUserServiceImpl {
 		if (factory == null) {
 
 			factory = new ClassPathXmlApplicationContext(
-					"classpath:core/application-context.xml");
+					"classpath:/core/ibatis/application-context.xml");
 		}
 
 	}

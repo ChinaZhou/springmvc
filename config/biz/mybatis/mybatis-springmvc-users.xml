@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Aug 18 16:42:14 CST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+ 	<!-- 插入 -->
+	<insert id="addUser" parameterType="user">
+		insert into user
+			(
+				id,
+				username,
+				password,
+				createdBy,
+				created_date
+			)
+				values
+			(
+				<include refid="com.springmvc.queryIdpre"/>
+				'USER'
+				<include refid="com.springmvc.queryIdmid"/>
+				'user'
+				<include refid="com.springmvc.queryIdsuf"/>,
+				#{userName},
+				#{password},
+				#{createdBy},
+				now()
+			)
+		<selectKey keyProperty="id" resultType="java.lang.String">
+			<include refid="com.springmvc.returnIdpre"/>
+			'CUS'
+			<include refid="com.springmvc.returnIdmid"/>
+			'user'
+			<include refid="com.springmvc.returnIdsuf"/>
+		</selectKey>
+	</insert>
+	
+	<select id="getAllUser" resultType="HashMap">
+		select 	id id,
+				userName userName,
+				password password,
+				created_date createdDate
+			from user
+	</select>
+	
+	<select id="getUserById" parameterType="java.lang.String" resultType="user">
+		select 	id id,
+				userName userName,
+				password password,
+				created_date createdDate
+			from user
+			where id = #{value}
+	</select>
+	
+	<delete id="deleteUserById" parameterType="java.lang.String">
+		delete from user where id = #{value}
+	</delete>
+	
+	<update id="updateUser" parameterType="user">
+		update user set userName = #{userName} where id = #{id}
+	</update>
+   
+</mapper>
