@@ -9,12 +9,17 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd    
                         http://www.springframework.org/schema/mvc    
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
-	<!-- 自动扫描 -->
-	<context:component-scan base-package="com.springmvc" />
+
+	<!-- 自动扫描的包名 -->
+	<context:component-scan base-package="com.springmvc">
+		<!-- 配置Controller不扫描 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" /> 
+	</context:component-scan>
+	
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:/core/mybatis/springmvc-context.properties" />
+		<property name="location" value="classpath:springmvc-context.properties" />
 	</bean>
 
 	<!-- 数据源配置 -->
@@ -57,27 +62,50 @@
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:core/mybatis/sqlmap-mybatis-config.xml"/>
 		<!-- 自动扫描mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath:/biz/mybatis/*.xml"></property>
+		<property name="mapperLocations" value="classpath:biz/mybatis/*.xml"></property>
+	</bean> 
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">         
+		<constructor-arg index="0" ref="sqlSessionFactory" />   
 	</bean>
 	
-	  <!-- 配置sqlsession 产生这个实例就是通过 sqlsessionTemplate来实现的 -->      
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">  
-	    <constructor-arg index="0">  
-	   	 <ref  bean="sqlSessionFactory"/>  
-	    </constructor-arg>  
-    </bean>  
-
-	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
-<!-- 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.springmvc.comm.dao.impl" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
-	</bean> -->
-
-	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- 事务配置  -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
+		<property name="globalRollbackOnParticipationFailure" value="false" />
 	</bean>
+	
+	<!-- 配置文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="10485760000" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+	
+	<!-- 全局异常配置 start -->
+	<bean id="exceptionResolver" class="com.springmvc.comm.exception.CommonExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">/index/error</prop>
+				<prop key="java.lang.Throwable">/index/error</prop>
+			</props>
+		</property>
+		<property name="statusCodes">
+			<props>
+				<prop key="/index/error">500</prop>
+				<prop key="/index/error">404</prop>
+			</props>
+		</property>
+		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
+		<property name="warnLogCategory" value="ERROR"></property>
+		<!-- 默认错误页面，当找不到上面mappings中指定的异常对应视图时，使用本默认配置 -->
+		<property name="defaultErrorView" value="/index/error"></property>
+		<!-- 默认HTTP状态码 -->
+		<property name="defaultStatusCode" value="500"></property>
+	</bean>
+	<!-- 全局异常配置 end -->
 
 </beans>  

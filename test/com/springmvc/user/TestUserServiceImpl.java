@@ -18,8 +18,10 @@ public class TestUserServiceImpl {
 	public void setSpringBeanFactory() {
 		if (factory == null) {
 
+			/*factory = new ClassPathXmlApplicationContext(
+					"classpath:/core/ibatis/application-context.xml");*/
 			factory = new ClassPathXmlApplicationContext(
-					"classpath:/core/ibatis/application-context.xml");
+					"classpath:/core/mybatis/spring-mybatis.xml");
 		}
 
 	}

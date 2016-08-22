@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.springmvc.comm.dao.impl.BaseIbatisDaoImpl;
+import com.springmvc.comm.dao.impl.BaseMybatisDaoImpl;
 import com.springmvc.user.dao.UserDao;
 import com.springmvc.user.dto.UserDto;
 
 @SuppressWarnings("unchecked")
 @Service
-public class UserDaoImpl extends BaseIbatisDaoImpl implements UserDao{
+public class UserDaoImpl extends BaseMybatisDaoImpl implements UserDao{
 
 	@Override
 	public String addUser(UserDto userDto) {

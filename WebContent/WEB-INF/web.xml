@@ -9,7 +9,8 @@
   <context-param>
 		<description>初始化Spring配置文件</description>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:/core/ibatis/application-context.xml</param-value>
+		<!-- <param-value>classpath*:/core/ibatis/application-context.xml</param-value> -->
+		<param-value>classpath*:core/mybatis/spring-mybatis.xml</param-value>
 	</context-param>
 	<listener> 
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
@@ -24,20 +25,13 @@
 		<filter-name>HiddenHttpMethodFilter</filter-name>
 		<servlet-name>springMVC</servlet-name>
 	</filter-mapping>
-	<!-- <filter>
-		<filter-name>HttpPutFormContentFilter</filter-name>
-		<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>HttpPutFormContentFilter</filter-name>
-		<servlet-name>SpringMVC</servlet-name>
-	</filter-mapping> -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath*:/core/ibatis/spring-servlet.xml</param-value>
+			<!-- <param-value>classpath*:/core/ibatis/spring-servlet.xml</param-value> -->
+			<param-value>classpath*:core/mybatis/spring-servlet.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
