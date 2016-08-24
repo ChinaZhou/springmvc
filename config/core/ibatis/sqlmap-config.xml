@@ -5,7 +5,7 @@
 <sqlMapConfig>
 	<!--定义ibatis自身应用信息 -->
 	<settings cacheModelsEnabled="true" enhancementEnabled="true"
-		lazyLoadingEnabled="false" maxSessions="64" maxTransactions="8"
+		lazyLoadingEnabled="true" maxSessions="64" maxTransactions="8"
 		maxRequests="128" useStatementNamespaces="true" />
 	<!--配置映射文件 -->
 	<sqlMap resource="biz/ibatis/ibatis-springmvc-common.xml" />

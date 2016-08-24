@@ -11,7 +11,7 @@ import com.springmvc.user.dto.UserDto;
 
 @SuppressWarnings("unchecked")
 @Service
-public class UserDaoImpl extends BaseMybatisDaoImpl implements UserDao{
+public class UserDaoImpl extends BaseIbatisDaoImpl implements UserDao{
 
 	@Override
 	public String addUser(UserDto userDto) {

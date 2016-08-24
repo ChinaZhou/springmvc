@@ -6,7 +6,16 @@
 <sqlMap namespace="user">
 
 	<typeAlias alias="user" type="com.springmvc.user.dto.UserDto" />
- 
+	
+		<!-- 配置缓存模型 -->
+	<cacheModel type="LRU" id="user-cache" readOnly="true" serialize="true">
+		<flushInterval hours="24"/>
+		<flushOnExecute statement="user.addUser"/>
+		<flushOnExecute statement="user.deleteUserById"/>
+		<flushOnExecute statement="user.updateUser"/>
+		<property name="cache_size" value="500"/>
+	</cacheModel>	
+	
  	<!-- 插入 -->
 	<insert id="addUser" parameterClass="user">
 		insert into user
@@ -38,7 +47,7 @@
 		</selectKey>
 	</insert>
 	
-	<select id="getAllUser" resultClass="HashMap" remapResults="true">
+	<select id="getAllUser" resultClass="HashMap" cacheModel="user-cache">
 		select 	id id,
 				userName userName,
 				password password,
@@ -46,7 +55,18 @@
 			from user
 	</select>
 	
-	<select id="getUserById" parameterClass="java.lang.String"  resultClass="user" remapResults="true">
+	<!-- remapResults="true" 的作用，默认为false
+			<select id="xxxxxxxxxxx" parameterClass="map" resultMap="baseResultMap"  remapResults="true">
+           		SELECT  $field$          
+         			FROM dual        
+         			WHERE   xxxxx = xx
+ 				</select>
+				像这种，select后面是动态的，需要设置remapResults为ture
+				为啥呢？因为ibatis默认的会缓存rs中的meta信息，如果你第一次查询的列和第二次查询的列不一样的话，
+				那么第二次ibatis还会以第一次查询的列为key从rs里面获取数据，但是第二次列已经变化了
+				，所以第二次取数据的时候，RS里面已经没有了你第一次的那个列了，所以会出错
+ 	-->
+	<select id="getUserById" parameterClass="java.lang.String"  resultClass="user">
 		select 	id id,
 				userName userName,
 				password password,
@@ -62,5 +82,5 @@
 	<update id="updateUser" parameterClass="user">
 		update user set userName = #userName# where id = #id#
 	</update>
-   
+	
 </sqlMap>

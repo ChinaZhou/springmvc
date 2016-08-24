@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.springmvc.comm.dao.BaseMybatisDao;
 
-@Repository
+/*@Repository*/
 public class BaseMybatisDaoImpl implements BaseMybatisDao{
 
 	/*@Resource(name = "sqlSessionTemplate")

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.springmvc.comm.dao.BaseIbatisDao;
 
-/*@Repository*/
+@Repository
 public class BaseIbatisDaoImpl extends SqlMapClientDaoSupport implements BaseIbatisDao{
 
 	@Resource(name = "sqlMapClient")
