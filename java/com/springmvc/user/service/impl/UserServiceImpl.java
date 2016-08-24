@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService{
 		return id;
 	}
 
+	@Tag
 	@Override
 	public List<UserDto> getAllUser() {
 		return userDao.getAllUser();

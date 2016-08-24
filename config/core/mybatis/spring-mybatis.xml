@@ -103,17 +103,22 @@
 	
 	<!-- 全局异常配置 start -->
 	<bean id="exceptionResolver" class="com.springmvc.comm.exception.CommonExceptionResolver">
+		<!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->
 		<property name="exceptionMappings">
 			<props>
+				<!-- 表示当抛出java.lang.Exception的时候就返回名叫/index/error的视图 -->
 				<prop key="java.lang.Exception">/index/error</prop>
 				<prop key="java.lang.Throwable">/index/error</prop>
 			</props>
 		</property>
+		<!-- 定义在发生异常时视图跟返回码的对应关系 -->
 		<property name="statusCodes">
 			<props>
+				<!-- 表示在发生java.lang.Exception时返回视图/index/error，
+					然后这里定义发生异常时视图/index/error对应的HttpServletResponse的返回码是500 -->  
 				<prop key="/index/error">500</prop>
 				<prop key="/index/error">404</prop>
-			</props>
+			</props>	
 		</property>
 		<!-- 设置日志输出级别，不定义则默认不输出警告等错误日志信息 -->
 		<property name="warnLogCategory" value="ERROR"></property>
