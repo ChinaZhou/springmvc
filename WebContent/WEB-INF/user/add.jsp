@@ -30,8 +30,8 @@
 		<form action="<%=basePath%>user" method="post">
 			<table>
 				<tr>
-					<th>用户名称</th>
-					<th>用户密码</th>
+					<th>用户名称 </th>
+					<th>用户密码 </th>
 				</tr>
 				<tr>
 					<td><input type="text" name="userName" id="userName" /></td>
